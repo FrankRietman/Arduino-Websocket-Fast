@@ -86,30 +86,30 @@ http://tools.ietf.org/html/draft-hixie-thewebsocketprotocol-75
 #define WS_SIZE64         127
 
 
-class WebSocketClient {
+class WebSocketClient
+{
 public:
-
     // Handle connection requests to validate and process/refuse
     // connections.
-    bool handshake(Client &client, bool socketio = false);
+    bool handshake(Client &client);
 
     // Get data off of the stream
-    bool getData(String& data, uint8_t *opcode = NULL);
+    bool getData(String &data, uint8_t *opcode = NULL);
+
     bool getData(char *data, uint8_t *opcode = NULL);
 
     // Write data to the stream
     void sendData(const char *str, uint8_t opcode = WS_OPCODE_TEXT, bool fast = true);
+
     void sendData(String str, uint8_t opcode = WS_OPCODE_TEXT, bool fast = true);
 
-    bool issocketio;
-    char *path;
-    char *host;
-    char *protocol;
+    const char *path;
+    const char *host;
+    const char *protocol;
+    const char *cookie;
 
 private:
     Client *socket_client;
-    // socket.io session id
-    char sid[32];
     unsigned long _startMillis;
 
     const char *socket_urlPrefix;
@@ -118,7 +118,8 @@ private:
     // websocket connection.
     bool analyzeRequest();
 
-    bool handleStream(String& data, uint8_t *opcode);
+    bool handleStream(String &data, uint8_t *opcode);
+
     bool handleStream(char *data, uint8_t *opcode);
 
     // Disconnect user gracefully.
@@ -127,12 +128,13 @@ private:
     int timedRead();
 
     void sendEncodedData(char *str, uint8_t opcode);
+
     void sendEncodedData(String str, uint8_t opcode);
 
     void sendEncodedDataFast(char *str, uint8_t opcode);
+
     void sendEncodedDataFast(String str, uint8_t opcode);
 };
-
 
 
 #endif
